@@ -17,8 +17,13 @@ public class Filmarkiv implements FilmarkivADT {
      */
 	@Override
 	public Film finnFilm(int nr) {
-		
-		return null;
+		for (int i = 0; i<filmer.length; i++) {
+			if(filmer[i] != null && filmer[i].getFilmnr() == nr) {
+				return filmer[i];
+			}
+		}
+		Film film = null;
+		return film;
 	}
 	
 	/** 
@@ -27,18 +32,41 @@ public class Filmarkiv implements FilmarkivADT {
 	  */ 
 	@Override
 	public void leggTilFilm(Film nyFilm) {
-		// TODO Auto-generated method stub
-		
+		boolean laTil = false;
+		for (int i = 0; i<filmer.length; i++){
+			if(filmer[i] == null || filmer[i].equals(nyFilm)) {
+				filmer[i] = nyFilm;
+				laTil = true;
+				break;
+			}
+		} 
+		if (!laTil) {
+			utvid();
+			leggTilFilm(nyFilm);
+		}
+	}
+	
+	private void utvid() {
+		Film[] filmerDobbel = new Film[filmer.length*2];
+		for (int i = 0; i<filmer.length; i++) {
+			filmerDobbel[i] = filmer[i];
+		}
+		filmer = filmerDobbel;
 	}
 	
 	/** 
-	  * Sletter en fil med gitt nr 
+	  * Sletter en film med gitt nr 
 	  * @param filmnr nr på film som skal slettes 
 	  * @return true dersom filmen ble slettet, false ellers 
 	  */ 
 	@Override
 	public boolean slettFilm(int filmnr) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < filmer.length; i++) {
+			if(filmer[i].getFilmnr() == filmnr) {
+				filmer[i] = null;
+				return true;
+			}
+		}
 		return false;
 	}
 	
